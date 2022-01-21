@@ -1,19 +1,21 @@
-#include <stdio.h>
+/**
+ * @file main.c
+ * @author your name (you@domain.com)
+ * @brief 
+ * @version 0.1
+ * @date 2022-01-21
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
 
-#include "counter.h"
+#include "stm32f7xx.h"
 
-int main() 
+int main()
 {
 
-    count_up();
-    count_up();
-    count_up();
-    count_up();
-    int count = count_down();
-    count_up();
+    while(1);
 
-
-    printf("Hello CMake!\nCuenta = %d", count);
-
+    
     return 0;
 }

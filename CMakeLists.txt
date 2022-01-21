@@ -1,63 +1,82 @@
+#####################################################################
+#                           PREAMBLE                                #
+#####################################################################
 cmake_minimum_required(VERSION 3.22)
 
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/stm32_gcc.cmake)
+
 project(
-    stm32dev-toolchain 
+    stm32f7disco-project
     VERSION 0.1
-    DESCRIPTION "STM32 Development Skeleton"
-    LANGUAGES C)
+    DESCRIPTION "STM32F769NI-Discovery Development Skeleton"
+    LANGUAGES C ASM
+)
 
+set(EXECUTABLE "blinky")
 
-set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake" ${CMAKE_MODULE_PATH})
+#####################################################################
+#                       PROJECT WIDE SETUP                          #
+#####################################################################
+# Declare global flags (used on all targets):
+add_compile_options(-Wall -Werror)
 
-# Only do these if this is the main project, and not if it is included through add_subdirectory
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+# Add cmake folder to the module path:
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-    # Specify and require the C99 standard
-    set(CMAKE_C_STANDARD 99)
-    set(CMAKE_C_STANDARD_REQUIRED True)
+# Specify and require the C99 standard and ensure -std=cxx instead of -std=gnuxx
+set(CMAKE_C_STANDARD 99 CACHE STRING "The C standard to use")
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS OFF)
 
-    # Let's ensure -std=cxx instead of -std=gnuxx
-    set(CMAKE_C_EXTENSIONS OFF)
-
-    # Docs only available if this is the main app
-    find_package(Doxygen)
-    if(Doxygen_FOUND)
-        add_subdirectory(docs)
-    else()
-        message(STATUS "Doxygen not found, not building docs")
-    endif()
-
-    # Testing only available if this is the main app
-    # Note this needs to be done in the main CMakeLists
-    # since it calls enable_testing, which must be in the
-    # main CMakeLists.
-    include(CTest)
-
+set(default_build_type "Release")
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+    message(STATUS "Setting build type to '${default_build_type}' as none was specified.")
+    set(CMAKE_BUILD_TYPE "${default_build_type}" CACHE
+        STRING "Choose the type of build." FORCE)
+    # Set the possible values of build type for cmake-gui
+    set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
+        "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
 
-# This module enables populating content at configure time via any method
-# supported by the ExternalProject module.
-include(FetchContent)
+#####################################################################
+#                    EXTERNAL PROVIDED CONTENT                      #
+#####################################################################
+# # This module enables populating content at configure time via any method
+# # supported by the ExternalProject module.
+# include(FetchContent)
+# set(FETCHCONTENT_QUIET off)
 
-# Formatting library
-FetchContent_Declare(
-  fmtlib
-  GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-  GIT_TAG 5.3.0)
-FetchContent_MakeAvailable(fmtlib)
+# # STM32CubeF7 SDK:
+# FetchContent_Declare(
+#   STM32CubeF7
+#   GIT_REPOSITORY https://github.com/STMicroelectronics/STM32CubeF7.git
+#   GIT_TAG v1.16.2
+# )
 
+# FetchContent_MakeAvailable(STM32CubeF7)
 
+#####################################################################
+#                MAIN TARGETS BUILT BY THIS PROJECT                 #
+#####################################################################
 add_subdirectory(src)
 
-add_subdirectory(lib)
+find_package(Doxygen)
+if(Doxygen_FOUND)
+    add_subdirectory(doc)
+else()
+    message(STATUS "Doxygen not found, not building docs")
+endif()
 
-
-# Testing only available if this is the main app
-# if((CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME) AND BUILD_TESTING)
+#####################################################################
+#                            TESTING                                #
+#####################################################################
+# include(CTest)
+# if(BUILD_TESTING)
 #     add_subdirectory(tests)
 # endif()
 
-
-
+#####################################################################
+#                           PACKAGING                               #
+#####################################################################
 
 
