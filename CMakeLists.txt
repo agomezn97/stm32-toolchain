@@ -58,7 +58,7 @@ FetchContent_Declare(
   STM32Cube
   GIT_REPOSITORY https://github.com/STMicroelectronics/STM32Cube${STM32_FAMILY}.git
   GIT_TAG        master
-  SOURCE_DIR     lib
+  SOURCE_DIR     ${PROJECT_SOURCE_DIR}/lib/STM32Cube
 )
 FetchContent_MakeAvailable(STM32Cube)
 

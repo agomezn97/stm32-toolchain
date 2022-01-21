@@ -16,7 +16,7 @@ target_include_directories(${EXECUTABLE} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/inc $
 #####################################################################
 #                           MODULES                                 #
 #####################################################################
-add_subdirectory(${PROJECT_SOURCE_DIR}/drivers ${PROJECT_BINARY_DIR}/build/drivers)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib ${PROJECT_BINARY_DIR}/build/lib)
 # add_subdirectory(modulo1)
 # add_subdirectory(modulo2)
 
