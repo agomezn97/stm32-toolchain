@@ -4,9 +4,10 @@
 cmake_minimum_required(VERSION 3.22)
 
 # -- TODO: Specify the gcc-arm compiler path and device family and number
-set(ARM_TOOLCHAIN_PATH /opt/gcc-arm CACHE STRING "")
-set(STM32_FAMILY F7 CACHE STRING "")
-set(STM32_DEVICE STM32F769xx CACHE STRING "")
+set(ARM_TOOLCHAIN_PATH /opt/gcc-arm         CACHE STRING "")
+set(STM32_FAMILY       F7                   CACHE STRING "")
+set(STM32_DEVICE       STM32F769xx          CACHE STRING "")
+set(STM32_BOARD        STM32F769I-Discovery CACHE STRING "") # (optional)
 
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/STM32-toolchain.cmake)
 
@@ -81,6 +82,8 @@ endif()
 # if(BUILD_TESTING)
 #     add_subdirectory(tests)
 # endif()
+
+# option(CLANG_FORMAT ON)
 
 #####################################################################
 #                           PACKAGING                               #

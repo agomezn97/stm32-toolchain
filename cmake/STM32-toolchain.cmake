@@ -2,7 +2,7 @@ set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR arm)
 
 if(NOT ARM_TOOLCHAIN_PATH)
-  message(ERROR "You have to specify a path to the GCC-ARM folder in your system!")
+    message(ERROR "You have to specify a path to the GCC-ARM folder in your system!")
 endif()
 set(ARM_TARGET_TRIPLET "arm-none-eabi")
 
@@ -20,8 +20,11 @@ find_program(CMAKE_SIZE NAMES ${ARM_TARGET_TRIPLET}-size HINTS ${TOOLCHAIN_BIN_P
 find_program(CMAKE_DEBUGGER NAMES ${ARM_TARGET_TRIPLET}-gdb HINTS ${TOOLCHAIN_BIN_PATH})
 find_program(CMAKE_CPPFILT NAMES ${ARM_TARGET_TRIPLET}-c++filt HINTS ${TOOLCHAIN_BIN_PATH})
 
-
-set(ARM_OPTIONS -mcpu=cortex-m7 -mfpu=auto -mfloat-abi=hard --specs=nano.specs)
+if("${STM32_FAMILY}" STREQUAL "F7")
+    set(ARM_OPTIONS -mcpu=cortex-m7 -mfpu=auto -mfloat-abi=hard --specs=nano.specs)
+else()
+    message(ERROR "No family specified!")
+endif()
 
 add_compile_options(
     ${ARM_OPTIONS}
@@ -35,14 +38,14 @@ add_compile_definitions(
 )
 
 add_link_options(
-  ${ARM_OPTIONS}
-  # $<$<CONFIG:DEBUG>:--specs=rdimon.specs>
-  # $<$<CONFIG:RELEASE>:--specs=nosys.specs>
-  # $<$<CONFIG:DEBUG>:-u_printf_float>
-  # $<$<CONFIG:DEBUG>:-u_scanf_float>
-  -nostartfiles
-  LINKER:--gc-sections
-  LINKER:--build-id
+    ${ARM_OPTIONS}
+    # $<$<CONFIG:DEBUG>:--specs=rdimon.specs>
+    # $<$<CONFIG:RELEASE>:--specs=nosys.specs>
+    # $<$<CONFIG:DEBUG>:-u_printf_float>
+    # $<$<CONFIG:DEBUG>:-u_scanf_float>
+    -nostartfiles
+    LINKER:--gc-sections
+    LINKER:--build-id
 )
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)

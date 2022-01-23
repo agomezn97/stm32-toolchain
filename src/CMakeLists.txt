@@ -5,7 +5,7 @@ add_executable(${EXECUTABLE} main.c)
 
 # --- Declare flags: ---
 set(CMAKE_INCLUDE_CURRENT_DIR TRUE)
-target_include_directories(${EXECUTABLE} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/inc ${PROJECT_SOURCE_DIR}/drivers/CMSIS/Include)
+target_include_directories(${EXECUTABLE} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/inc)
 
 
 # if (SOME_SETTING)
@@ -17,12 +17,27 @@ target_include_directories(${EXECUTABLE} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/inc $
 #                           MODULES                                 #
 #####################################################################
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib ${PROJECT_BINARY_DIR}/build/lib)
-# add_subdirectory(modulo1)
-# add_subdirectory(modulo2)
+# add_subdirectory(module1)
+# add_subdirectory(module2)
+
+target_sources(
+    HAL
+    PUBLIC  ${HAL_SRC_PATH}/stm32f7xx_hal.c
+            ${HAL_SRC_PATH}/stm32f7xx_hal_cortex.c
+            ${HAL_SRC_PATH}/stm32f7xx_hal_gpio.c
+            ${HAL_SRC_PATH}/stm32f7xx_hal_uart.c
+            ${HAL_SRC_PATH}/stm32f7xx_hal_i2c.c
+)
+target_sources(
+    BSP
+    PUBLIC  ${BSP_SRC_PATH}/stm32f769i_discovery.c
+)
 
 
 #####################################################################
 #                        DEPENDENCIES                               #
 #####################################################################
-target_link_libraries(${EXECUTABLE} PRIVATE CMSIS)
+# The dependencies in STM32Cube are: BSP --> ( HAL --> CMSIS )
+# If you link against BSP there is no need to link against HAL or CMSIS
+target_link_libraries(${EXECUTABLE} PRIVATE BSP)
 
