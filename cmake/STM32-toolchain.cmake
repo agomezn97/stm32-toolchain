@@ -43,7 +43,8 @@ add_link_options(
     # $<$<CONFIG:RELEASE>:--specs=nosys.specs>
     # $<$<CONFIG:DEBUG>:-u_printf_float>
     # $<$<CONFIG:DEBUG>:-u_scanf_float>
-    -nostartfiles
+    # -nostartfiles
+    # -nostdlib
     LINKER:--gc-sections
     LINKER:--build-id
 )

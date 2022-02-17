@@ -28,6 +28,10 @@ set(EXECUTABLE "exe-name")
 # Add cmake folder to the module path:
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+# # -- TODO: Specify a linker script
+set(LINKER_SCRIPT ${CMAKE_SOURCE_DIR}/src/LinkerScript.ld)
+# list(APPEND CMAKE_EXE_LINKER_FLAGS "-T ${LINKER_SCRIPT}")
+
 # -- TODO: Define required standards for C and C++
 # Language standards specifications (and requirements):
 set(CMAKE_C_STANDARD 99 CACHE STRING "")
